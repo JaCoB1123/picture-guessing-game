@@ -11,8 +11,8 @@ namespace PictureSplitter
     internal class MainViewModel : INotifyPropertyChanged
     {
         private readonly MainView _View;
-        private string _filePath;
-        private int _numParts;
+        private string _filePath = @"C:\Users\Jan Bader\Desktop\1.bild.jp";
+        private int _numParts = 5;
 
         public MainViewModel(MainView xView)
         {
@@ -32,6 +32,8 @@ namespace PictureSplitter
                 OnPropertyChanged();
             }
         }
+
+        public BitmapImage Image { get; set; }
 
         public int NumParts
         {
@@ -55,8 +57,13 @@ namespace PictureSplitter
             if (propertyChangedEventArgs.PropertyName != nameof(FilePath))
                 return;
 
-            var image = new BitmapImage(new Uri(FilePath));
-            _View.ImageControl.Source = image;
+            Image = new BitmapImage(new Uri(FilePath));
+            var writeable = new WriteableBitmap(Image);
+            var width = Image.PixelWidth / NumParts;
+            var height = Image.PixelHeight / NumParts;
+            writeable = writeable.Crop(0, 0, width, height);
+
+            _View.ImageControl.Source = writeable.Clone();
         }
     }
 }
