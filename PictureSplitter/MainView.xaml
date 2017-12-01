@@ -28,6 +28,6 @@
 
         <Button Grid.Row="3" Grid.Column="1" Click="ButtonBase_OnClick">Next</Button>
 
-        <Image Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Name="ImageControl"></Image>
+        <Image Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Name="ImageControl"></Image>
     </Grid>
 </Window>
