@@ -87,7 +87,7 @@ namespace PictureSplitter
 
         private void OnFilePathChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
-            if (propertyChangedEventArgs.PropertyName != nameof(FilePath))
+            if (propertyChangedEventArgs.PropertyName != nameof(FilePath) && propertyChangedEventArgs.PropertyName != nameof(NumParts))
                 return;
 
             _loadedParts = new HashSet<Point>();
