@@ -105,7 +105,7 @@ namespace PictureSplitter
         {
             if (_loadedParts.Count == NumParts * NumParts)
             {
-                StopTimer();
+                AutoAufdecken = false;
                 return;
             }
 
