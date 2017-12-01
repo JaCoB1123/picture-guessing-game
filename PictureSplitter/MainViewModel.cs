@@ -47,6 +47,20 @@ namespace PictureSplitter
             }
         }
 
+        public void NextPart()
+        {
+            Image = new BitmapImage(new Uri(FilePath));
+            var writeable = new WriteableBitmap(Image);
+
+            var part = Random.Next(0, NumParts);
+
+            var width = Image.PixelWidth / NumParts;
+            var height = Image.PixelHeight / NumParts;
+            writeable = writeable.Crop(width * part, height * part, width, height);
+
+            _View.ImageControl.Source = writeable.Clone();
+        }
+
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
@@ -58,16 +72,7 @@ namespace PictureSplitter
             if (propertyChangedEventArgs.PropertyName != nameof(FilePath))
                 return;
 
-            Image = new BitmapImage(new Uri(FilePath));
-            var writeable = new WriteableBitmap(Image);
-
-            var part = Random.Next(0, NumParts);
-
-            var width = Image.PixelWidth / NumParts;
-            var height = Image.PixelHeight / NumParts;
-            writeable = writeable.Crop(width * part, height * part, width, height);
-
-            _View.ImageControl.Source = writeable.Clone();
+            NextPart();
         }
     }
 }

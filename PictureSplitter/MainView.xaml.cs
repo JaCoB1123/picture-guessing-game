@@ -20,10 +20,18 @@ namespace PictureSplitter
     /// </summary>
     public partial class MainView : Window
     {
+        private MainViewModel _mainViewModel;
+
         public MainView()
         {
             InitializeComponent();
-            DataContext = new MainViewModel(this);
+            _mainViewModel = new MainViewModel(this);
+            DataContext = _mainViewModel;
+        }
+
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            _mainViewModel.NextPart();
         }
     }
 }

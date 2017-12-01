@@ -20,7 +20,10 @@
         <TextBox  Grid.Row="0" Grid.Column="1" Text="{Binding FilePath}" />
 
         <Label Grid.Row="1" Grid.Column="0">Anzahl Teile</Label>
-        <TextBox  Grid.Row="1" Grid.Column="1" Text="{Binding NumParts}" />
+        <StackPanel Grid.Row="1" Grid.Column="1">
+            <TextBox  Text="{Binding NumParts}" />
+            <Button Click="ButtonBase_OnClick">Next</Button>
+        </StackPanel>
 
         <Image Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Name="ImageControl"></Image>
     </Grid>
