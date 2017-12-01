@@ -55,6 +55,9 @@ namespace PictureSplitter
 
         public void NextPart()
         {
+            if (_loadedParts.Count == NumParts * NumParts)
+                return;
+
             int partX;
             int partY;
             do
