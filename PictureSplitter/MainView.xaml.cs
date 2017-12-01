@@ -23,6 +23,7 @@ namespace PictureSplitter
         public MainView()
         {
             InitializeComponent();
+            DataContext = new MainViewModel();
         }
     }
 }
