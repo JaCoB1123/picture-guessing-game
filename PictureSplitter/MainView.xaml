@@ -11,6 +11,7 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -23,7 +24,9 @@
         <Label Grid.Row="1" Grid.Column="0">Anzahl Teile</Label>
         <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding NumParts}" />
 
-        <Button Grid.Row="2" Grid.Column="1" Click="ButtonBase_OnClick">Next</Button>
+        <CheckBox Grid.Row="2" Grid.Column="1" IsChecked="{Binding AutoAufdecken}">Auto aufdecken</CheckBox>
+
+        <Button Grid.Row="3" Grid.Column="1" Click="ButtonBase_OnClick">Next</Button>
 
         <Image Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Name="ImageControl"></Image>
     </Grid>
