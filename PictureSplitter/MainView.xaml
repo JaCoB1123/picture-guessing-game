@@ -10,6 +10,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -20,11 +21,10 @@
         <TextBox  Grid.Row="0" Grid.Column="1" Text="{Binding FilePath}" />
 
         <Label Grid.Row="1" Grid.Column="0">Anzahl Teile</Label>
-        <StackPanel Grid.Row="1" Grid.Column="1">
-            <TextBox  Text="{Binding NumParts}" />
-            <Button Click="ButtonBase_OnClick">Next</Button>
-        </StackPanel>
+        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding NumParts}" />
 
-        <Image Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Name="ImageControl"></Image>
+        <Button Grid.Row="2" Grid.Column="1" Click="ButtonBase_OnClick">Next</Button>
+
+        <Image Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Name="ImageControl"></Image>
     </Grid>
 </Window>
