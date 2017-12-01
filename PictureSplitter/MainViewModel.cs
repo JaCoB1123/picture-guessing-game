@@ -2,9 +2,11 @@
 using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using PictureSplitter.Annotations;
+using Point = System.Windows.Point;
 
 namespace PictureSplitter
 {
@@ -60,7 +62,9 @@ namespace PictureSplitter
             var height = BaseImage.PixelHeight / NumParts;
             writeable = writeable.Crop(width * partX, height * partY, width, height);
 
-            SetImage(writeable);
+            Image.Blit(new Rect(width * partX, height * partY, width, height), writeable, new Rect(0, 0, width, height));
+
+            SetImage(Image);
         }
 
         [NotifyPropertyChangedInvocator]
