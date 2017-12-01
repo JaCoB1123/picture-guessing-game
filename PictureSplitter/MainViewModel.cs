@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Runtime.CompilerServices;
+using System.Timers;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 using PictureSplitter.Annotations;
 using Point = System.Windows.Point;
 
@@ -14,17 +17,31 @@ namespace PictureSplitter
     {
         private static readonly Random Random = new Random();
         private readonly MainView _View;
+        private bool _autoAufdecken;
         private string _filePath = @"C:\Users\Jan Bader\Desktop\1.bild.jp";
         private HashSet<Point> _loadedParts = new HashSet<Point>();
         private int _numParts = 5;
+        private DispatcherTimer _Timer;
 
         public MainViewModel(MainView xView)
         {
             _View = xView;
             PropertyChanged += OnFilePathChanged;
+            PropertyChanged += OnAutoAufdeckenChanged;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public bool AutoAufdecken
+        {
+            get => _autoAufdecken;
+            set
+            {
+                if (value == _autoAufdecken) return;
+                _autoAufdecken = value;
+                OnPropertyChanged();
+            }
+        }
 
         public BitmapImage BaseImage { get; set; }
 
@@ -84,9 +101,39 @@ namespace PictureSplitter
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        private void AutoAufgedeckt(object sender, EventArgs e)
+        {
+            if (_loadedParts.Count == NumParts * NumParts)
+            {
+                StopTimer();
+                return;
+            }
+
+            NextPart();
+        }
+
+        private void OnAutoAufdeckenChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != nameof(AutoAufdecken))
+                return;
+
+            if (!AutoAufdecken)
+            {
+                StopTimer();
+                return;
+            }
+
+            var interval = 120000 / NumParts / NumParts;
+            _Timer = new DispatcherTimer(new TimeSpan(0, 0, 0, 0, interval), DispatcherPriority.Normal, AutoAufgedeckt, Dispatcher.CurrentDispatcher);
+            _Timer.Start();
+        }
+
         private void OnFilePathChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
             if (propertyChangedEventArgs.PropertyName != nameof(FilePath) && propertyChangedEventArgs.PropertyName != nameof(NumParts))
+                return;
+
+            if (!File.Exists(FilePath))
                 return;
 
             _loadedParts = new HashSet<Point>();
@@ -101,6 +148,12 @@ namespace PictureSplitter
         {
             Image = writeableBitmap;
             _View.ImageControl.Source = Image;
+        }
+
+        private void StopTimer()
+        {
+            _Timer.Stop();
+            _Timer = null;
         }
     }
 }
