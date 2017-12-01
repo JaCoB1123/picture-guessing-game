@@ -10,6 +10,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"></ColumnDefinition>
@@ -17,5 +18,10 @@
         </Grid.ColumnDefinitions>
         <Label Grid.Row="0" Grid.Column="0">Dateipfad</Label>
         <TextBox  Grid.Row="0" Grid.Column="1" Text="{Binding FilePath}" />
+
+        <Label Grid.Row="1" Grid.Column="0">Anzahl Teile</Label>
+        <TextBox  Grid.Row="1" Grid.Column="1" Text="{Binding NumParts}" />
+
+        <Image Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Name="ImageControl"></Image>
     </Grid>
 </Window>
