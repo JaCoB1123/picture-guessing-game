@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.CompilerServices;
@@ -15,6 +16,7 @@ namespace PictureSplitter
         private static readonly Random Random = new Random();
         private readonly MainView _View;
         private string _filePath = @"C:\Users\Jan Bader\Desktop\1.bild.jp";
+        private HashSet<Point> _loadedParts = new HashSet<Point>();
         private int _numParts = 5;
 
         public MainViewModel(MainView xView)
@@ -53,13 +55,20 @@ namespace PictureSplitter
 
         public void NextPart()
         {
-            var writeable = new WriteableBitmap(BaseImage);
+            int partX;
+            int partY;
+            do
+            {
+                partX = Random.Next(0, NumParts);
+                partY = Random.Next(0, NumParts);
+            } while (_loadedParts.Contains(new Point(partX, partY)));
 
-            var partX = Random.Next(0, NumParts);
-            var partY = Random.Next(0, NumParts);
+            _loadedParts.Add(new Point(partX, partY));
 
             var width = BaseImage.PixelWidth / NumParts;
             var height = BaseImage.PixelHeight / NumParts;
+
+            var writeable = new WriteableBitmap(BaseImage);
             writeable = writeable.Crop(width * partX, height * partY, width, height);
 
             Image.Blit(new Rect(width * partX, height * partY, width, height), writeable, new Rect(0, 0, width, height));
@@ -78,6 +87,7 @@ namespace PictureSplitter
             if (propertyChangedEventArgs.PropertyName != nameof(FilePath))
                 return;
 
+            _loadedParts = new HashSet<Point>();
             BaseImage = new BitmapImage(new Uri(FilePath));
             var writeable = new WriteableBitmap(BaseImage);
             writeable.Clear(Colors.White);
