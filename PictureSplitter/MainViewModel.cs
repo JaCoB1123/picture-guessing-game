@@ -23,6 +23,8 @@ namespace PictureSplitter
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public BitmapImage BaseImage { get; set; }
+
         public string FilePath
         {
             get => _filePath;
@@ -34,7 +36,7 @@ namespace PictureSplitter
             }
         }
 
-        public BitmapImage Image { get; set; }
+        public WriteableBitmap Image { get; private set; }
 
         public int NumParts
         {
@@ -49,17 +51,16 @@ namespace PictureSplitter
 
         public void NextPart()
         {
-            Image = new BitmapImage(new Uri(FilePath));
-            var writeable = new WriteableBitmap(Image);
+            var writeable = new WriteableBitmap(BaseImage);
 
             var partX = Random.Next(0, NumParts);
             var partY = Random.Next(0, NumParts);
 
-            var width = Image.PixelWidth / NumParts;
-            var height = Image.PixelHeight / NumParts;
+            var width = BaseImage.PixelWidth / NumParts;
+            var height = BaseImage.PixelHeight / NumParts;
             writeable = writeable.Crop(width * partX, height * partY, width, height);
 
-            _View.ImageControl.Source = writeable.Clone();
+            SetImage(writeable);
         }
 
         [NotifyPropertyChangedInvocator]
@@ -73,7 +74,17 @@ namespace PictureSplitter
             if (propertyChangedEventArgs.PropertyName != nameof(FilePath))
                 return;
 
+            BaseImage = new BitmapImage(new Uri(FilePath));
+            var writeable = new WriteableBitmap(BaseImage);
+            writeable.Clear(Colors.White);
+            SetImage(writeable);
             NextPart();
+        }
+
+        private void SetImage(WriteableBitmap writeableBitmap)
+        {
+            Image = writeableBitmap;
+            _View.ImageControl.Source = Image;
         }
     }
 }
