@@ -52,11 +52,12 @@ namespace PictureSplitter
             Image = new BitmapImage(new Uri(FilePath));
             var writeable = new WriteableBitmap(Image);
 
-            var part = Random.Next(0, NumParts);
+            var partX = Random.Next(0, NumParts);
+            var partY = Random.Next(0, NumParts);
 
             var width = Image.PixelWidth / NumParts;
             var height = Image.PixelHeight / NumParts;
-            writeable = writeable.Crop(width * part, height * part, width, height);
+            writeable = writeable.Crop(width * partX, height * partY, width, height);
 
             _View.ImageControl.Source = writeable.Clone();
         }
