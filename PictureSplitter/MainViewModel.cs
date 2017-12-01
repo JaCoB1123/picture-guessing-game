@@ -10,6 +10,7 @@ namespace PictureSplitter
 {
     internal class MainViewModel : INotifyPropertyChanged
     {
+        private static readonly Random Random = new Random();
         private readonly MainView _View;
         private string _filePath = @"C:\Users\Jan Bader\Desktop\1.bild.jp";
         private int _numParts = 5;
@@ -59,9 +60,12 @@ namespace PictureSplitter
 
             Image = new BitmapImage(new Uri(FilePath));
             var writeable = new WriteableBitmap(Image);
+
+            var part = Random.Next(0, NumParts);
+
             var width = Image.PixelWidth / NumParts;
             var height = Image.PixelHeight / NumParts;
-            writeable = writeable.Crop(0, 0, width, height);
+            writeable = writeable.Crop(width * part, height * part, width, height);
 
             _View.ImageControl.Source = writeable.Clone();
         }
